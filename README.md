@@ -138,6 +138,20 @@ Apos executar o camando da celula o Catalogo é criado
 <img width="714" height="139" alt="image" src="https://github.com/user-attachments/assets/0677952c-4abd-4466-9861-4f8a1a35a645" />
 
 
+<img width="707" height="175" alt="image" src="https://github.com/user-attachments/assets/96be1e79-225b-43e7-89d4-2d9795990041" />
+
+### Criar hierarquia completa
+
+<img width="706" height="324" alt="image" src="https://github.com/user-attachments/assets/1820eca4-9b73-4278-b640-02aa101f6100" />
+
+<img width="711" height="122" alt="image" src="https://github.com/user-attachments/assets/1d7dde29-a06e-40d7-8119-e8b07a6676fa" />
+
+<img width="1080" height="407" alt="image" src="https://github.com/user-attachments/assets/c044df4a-fe87-4a4a-8204-23c75dd91c4e" />
+
+- Criando o schema
+
+  <img width="1325" height="486" alt="image" src="https://github.com/user-attachments/assets/67aeff62-f1eb-43fb-a9b4-963073129abc" />
+
 
 
 
