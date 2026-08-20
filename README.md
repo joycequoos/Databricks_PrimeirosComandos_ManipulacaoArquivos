@@ -41,6 +41,10 @@ Vamos Remover esse Notebook de testes
 
 ### 02. Hierarquias Databricks - Catalog, Schema, Tabelas e Volumens
 
+O Unity Catalog é a solução de governança unificada e centralizada de dados e inteligência artificial da Databricks.
+
+Ele funciona como uma camada única de controle aplicada a todas as áreas de trabalho (workspaces) do Databricks na sua nuvem (AWS, Azure ou GCP).
+
 Dentro do Databricks Unity Catalog, esses elementos formam a estrutura hierárquica para governança, organização e controle de acesso aos dados:
 
 Catalog (Catálogo): O nível mais alto de organização (container primário). Agrupa esquemas e serve como a principal fronteira para definir permissões de governança e isolamento de ambientes (ex: prod, dev).
