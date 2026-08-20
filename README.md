@@ -111,6 +111,30 @@ Volumes (Volumes): Objetos que representam armazenamento de dados não estrutura
 
 <img width="1343" height="419" alt="image" src="https://github.com/user-attachments/assets/e3406691-85d2-4186-bb05-2e210ce09267" />
 
+### Criando Hierarquia catalog na prática
+
+Aqui eu posso escolher a linguagem que eu quero escrever
+
+<img width="1259" height="521" alt="image" src="https://github.com/user-attachments/assets/925eed28-03cd-434c-bf99-2d813997a3c1" />
+
+Para criar novas celulas de código
+
+<img width="1108" height="470" alt="image" src="https://github.com/user-attachments/assets/079b4e74-ea59-4cb1-a929-97464e45b5e9" />
+
+- Criando um catalogo utilizando o exemplo da Microsoft
+
+Create catalogs: https://learn.microsoft.com/en-us/azure/databricks/catalogs/create-catalog
+
+<img width="715" height="149" alt="image" src="https://github.com/user-attachments/assets/8c0e4ae0-768b-4e64-be07-e4e556ebf41b" />
+
+<img width="752" height="457" alt="image" src="https://github.com/user-attachments/assets/c5c3dc1d-2b43-4de9-9055-0f6be746d0de" />
+
+
+
+
+
+
+
 
 
 
