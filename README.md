@@ -133,6 +133,9 @@ Apos executar o camando da celula o Catalogo é criado
 
 <img width="545" height="380" alt="image" src="https://github.com/user-attachments/assets/be4e609d-1763-4fc5-bf30-8ee4d9c0ddb3" />
 
+- Deletar Catalago
+
+<img width="714" height="139" alt="image" src="https://github.com/user-attachments/assets/0677952c-4abd-4466-9861-4f8a1a35a645" />
 
 
 
