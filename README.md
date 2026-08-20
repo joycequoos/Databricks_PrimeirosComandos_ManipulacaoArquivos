@@ -39,6 +39,33 @@ Vamos Remover esse Notebook de testes
 
 <img width="1108" height="581" alt="image" src="https://github.com/user-attachments/assets/6f481ac5-feb5-4c12-af0f-a3bf43fbadf4" />
 
+### 02. Hierarquias Databricks - Catalog, Schema, Tabelas e Volumens
+
+Dentro do Databricks Unity Catalog, esses elementos formam a estrutura hierárquica para governança, organização e controle de acesso aos dados:
+
+Catalog (Catálogo): O nível mais alto de organização (container primário). Agrupa esquemas e serve como a principal fronteira para definir permissões de governança e isolamento de ambientes (ex: prod, dev).
+
+Schema (Esquema / Database): O segundo nível da hierarquia, contido dentro de um Catalog. Funciona como uma pasta/diretório para organizar logicamente ativos relacionados (tabelas, visões e volumes).
+
+Tabelas (Tables): Objetos de dados estruturados e tabulares (com colunas e linhas) gerenciados pelo Unity Catalog (geralmente no formato Delta Lake), usados para consultas SQL, análises e machine learning.
+
+Volumes (Volumes): Objetos que representam armazenamento de dados não estruturados ou semi-estruturados (como imagens, arquivos PDF, JSONs brutos, CSVs ou logs). Permitem acessar e governar arquivos diretamente no armazenamento em nuvem sem precisar convertê-los em tabelas.
+
+| Nível | Função Principal | Tipo de Dado Contido |
+| :--- | :--- | :--- |
+| **Catalog** | Governança e isolamento de alto nível | Schemas |
+| **Schema** | Agrupamento lógico por contexto/projeto | Tabelas, Views, Volumes |
+| **Tabelas** | Dados estruturados para consulta SQL/Analytics | Linhas e Colunas (Delta) |
+| **Volumes** | Armazenamento governado de arquivos brutos | Arquivos não estruturados |
+
+<img width="546" height="411" alt="image" src="https://github.com/user-attachments/assets/9464e199-d287-4bb8-938f-139820b77202" />
+
+<img width="1343" height="419" alt="image" src="https://github.com/user-attachments/assets/e3406691-85d2-4186-bb05-2e210ce09267" />
+
+
+
+
+
 
 
 
