@@ -21,12 +21,13 @@ Production/ ou Projects/ (Ambiente Oficial): Espaço estruturado conectado ao co
 2. Estrutura por Arquitetura de Dados (Medallion Architecture)
 Em projetos de Engenharia de Dados, a organização dos notebooks costuma acompanhar as camadas da arquitetura Medalhão:
 
+```text
 📁 ETL_Pipeline/
 ├── 📄 00_setup_config.py      # Variáveis globais, conexões e funções auxiliares
 ├── 📄 01_ingestion_bronze.py  # Leitura das fontes e carga no catálogo em estado bruto
 ├── 📄 02_transform_silver.py  # Limpeza, deduplicação, validações e qualidade de dados
 └── 📄 03_aggregate_gold.py    # Regras de negócio, agregados e tabelas prontas para consumo
-
+````
 
 
 Modularização via %run ou Módulos Python (.py):
@@ -41,6 +42,7 @@ Documentação Embutida (Markdown): Uso do comando %md para documentar o objetiv
 
 3. Principais Recursos de Organização no Databricks
 Databricks Repos / Git Integration: Permite sincronizar pastas de notebooks diretamente com repositórios remotos (GitHub, Azure DevOps, GitLab, Bitbucket). Isso viabiliza versionamento por branches, code reviews e controle de implantação via CI/CD.
+
 | Aspecto | Prática Inadequada | Boa Prática de Organização |
 | :--- | :--- | :--- |
 | **Escopo do Script** | Notebooks monolíticos com milhares de linhas executando Ingestão e Carga juntas. | Notebooks pequenos e focados em uma única responsabilidade no fluxo. |
