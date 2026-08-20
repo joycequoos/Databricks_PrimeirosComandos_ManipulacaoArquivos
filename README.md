@@ -5,6 +5,49 @@
 
 ### 01. Organizacao de Databricks Notebooks
 
+No Databricks, a Organização de Notebooks refere-se ao conjunto de boas práticas, estruturas de diretórios e padrões de projeto usados para estruturar o código (Python, SQL, Scala, R) no Workspace do Databricks de forma sustentável, colaborativa e pronta para produção.
+
+Em ambientes corporativos, organizar os notebooks deixa de ser apenas uma questão de preferência pessoal e passa a ser essencial para a engenharia de dados, qualidade de dados e esteiras de CI/CD.
+
+1. Estrutura de Diretórios e Escopo de Uso
+A organização começa pela divisão do espaço de trabalho do workspace em três grandes categorias:
+
+Users/ (Espaço Pessoal / Sandbox): Diretórios individuais para desenvolvimento inicial, testes locais e exploração de dados sem risco de impactar outros usuários.
+
+Shared/ (Projetos Compartilhados): Utilizado para bibliotecas comuns, rotinas reutilizáveis e código colaborativo entre equipes.
+
+Production/ ou Projects/ (Ambiente Oficial): Espaço estruturado conectado ao controle de versão (Git) onde residem as pipelines oficiais executadas em produção via Workflows/Jobs.
+
+2. Estrutura por Arquitetura de Dados (Medallion Architecture)
+Em projetos de Engenharia de Dados, a organização dos notebooks costuma acompanhar as camadas da arquitetura Medalhão:
+
+📁 ETL_Pipeline/
+├── 📄 00_setup_config.py      # Variáveis globais, conexões e funções auxiliares
+├── 📄 01_ingestion_bronze.py  # Leitura das fontes e carga no catálogo em estado bruto
+├── 📄 02_transform_silver.py  # Limpeza, deduplicação, validações e qualidade de dados
+└── 📄 03_aggregate_gold.py    # Regras de negócio, agregados e tabelas prontas para consumo
+
+
+
+Modularização via %run ou Módulos Python (.py):
+
+%run ./notebook_auxiliar: Executa um notebook dentro de outro, importando suas variáveis e funções (muito usado para scripts de configuração).
+
+Arquivos .py nativos: O Databricks permite importar arquivos .py comuns armazenados na mesma estrutura de pastas como módulos Python convencionais (import my_module).
+
+Parametrização com Widgets: Uso de dbutils.widgets para capturar parâmetros de entrada dinamicamente (ex: data de execução, ambiente dev/prod), evitando que valores fixos (hardcoded) fiquem espalhados no código.
+
+Documentação Embutida (Markdown): Uso do comando %md para documentar o objetivo do script, entradas, saídas e regras de negócio aplicadas nas células.
+
+3. Principais Recursos de Organização no Databricks
+Databricks Repos / Git Integration: Permite sincronizar pastas de notebooks diretamente com repositórios remotos (GitHub, Azure DevOps, GitLab, Bitbucket). Isso viabiliza versionamento por branches, code reviews e controle de implantação via CI/CD.
+| Aspecto | Prática Inadequada | Boa Prática de Organização |
+| :--- | :--- | :--- |
+| **Escopo do Script** | Notebooks monolíticos com milhares de linhas executando Ingestão e Carga juntas. | Notebooks pequenos e focados em uma única responsabilidade no fluxo. |
+| **Versionamento** | Código alterado manualmente no workspace sem registro de histórico. | Notebooks vinculados a Reposiórios Git (GitHub, Azure DevOps) com controle por branch. |
+| **Parametrização** | Mudar variáveis manualmente no código a cada execução. | Uso de **Widgets** e integração com parâmetros de **Databricks Jobs**. |
+| **Reutilização** | Código duplicado e copiado em múltiplos notebooks. | Funções utilitárias consolidadas em módulos Python ou notebooks utilitários. |
+
 Acessar DataBricks / Workspace
 
 <img width="1359" height="503" alt="image" src="https://github.com/user-attachments/assets/80ad51fa-f259-45d3-b9a5-7325094f921d" />
