@@ -15,11 +15,13 @@ Organização de notebooks e hierarquia de dados no Databricks: como estruturar 
   - [A hierarquia em um diagrama](#a-hierarquia-em-um-diagrama)
   - [O que é cada nível](#o-que-é-cada-nível)
   - [Passo a passo: criando a hierarquia na prática](#passo-a-passo-criando-a-hierarquia-na-prática)
-- [Resumo geral](#resumo-geral)
+- [Parte 3 — Criando Ambiente Oficial do Curso](#parte-3--criando-ambiente-oficial-do-curso)
 
 ---
 
 ## Parte 1 — Organização de Notebooks
+
+
 
 > **Resumo:** um notebook Databricks é um documento interativo onde se escreve, executa e compartilha código de análise de dados. Organizar bem esses notebooks deixa de ser preferência pessoal e vira requisito para engenharia de dados, qualidade e esteiras de CI/CD em ambiente corporativo.
 
@@ -175,6 +177,8 @@ Após executar o comando na célula, o Catalog é criado:
 <img width="1100" height="445" alt="Tabela e volume no schema" src="https://github.com/user-attachments/assets/71520680-b433-4718-983a-6f275a052999" />
 
 ---
+
+## Parte 3 — Criando Ambiente Oficial do Curso
 
 [Criando ambiente Oficial do Curso](https://github.com/joycequoos/Databricks_Ambiente_Oficial_Curso)
 
