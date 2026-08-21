@@ -1,188 +1,195 @@
-# Databricks PrimeirosComandos ManipulacaoArquivos.
+[← Voltar para Databricks com SQL, Python e PySpark](https://github.com/joycequoos/Databricks-com-linguagem-SQL-Python-PySpark-Para-An-lise-de-Dados-Cloud/blob/main/README.md)
 
-- <p>Vamos comecar a organizar o nosso Notebooks.</p>
- Um notebook do Databricks é um documento interativo na web onde você escreve, executa e compartilha código de análise de dados e inteligência artificial em tempo real.
+# Databricks — Primeiros Comandos e Manipulação de Arquivos
 
-### 01. Organizacao de Databricks Notebooks
+Organização de notebooks e hierarquia de dados no Databricks: como estruturar o Workspace do jeito certo e como funciona o Unity Catalog (Catalog → Schema → Tabelas → Volumes).
 
-No Databricks, a Organização de Notebooks refere-se ao conjunto de boas práticas, estruturas de diretórios e padrões de projeto usados para estruturar o código (Python, SQL, Scala, R) no Workspace do Databricks de forma sustentável, colaborativa e pronta para produção.
+## Sumário
 
-Em ambientes corporativos, organizar os notebooks deixa de ser apenas uma questão de preferência pessoal e passa a ser essencial para a engenharia de dados, qualidade de dados e esteiras de CI/CD.
+- [Parte 1 — Organização de Notebooks](#parte-1--organização-de-notebooks)
+  - [Onde cada tipo de código vive](#onde-cada-tipo-de-código-vive)
+  - [Estrutura por Arquitetura Medalhão](#estrutura-por-arquitetura-medalhão)
+  - [Boas práticas x Práticas inadequadas](#boas-práticas-x-práticas-inadequadas)
+  - [Passo a passo: criando a estrutura de pastas](#passo-a-passo-criando-a-estrutura-de-pastas)
+- [Parte 2 — Hierarquia do Unity Catalog](#parte-2--hierarquia-do-unity-catalog)
+  - [A hierarquia em um diagrama](#a-hierarquia-em-um-diagrama)
+  - [O que é cada nível](#o-que-é-cada-nível)
+  - [Passo a passo: criando a hierarquia na prática](#passo-a-passo-criando-a-hierarquia-na-prática)
+- [Resumo geral](#resumo-geral)
 
-1. Estrutura de Diretórios e Escopo de Uso
-A organização começa pela divisão do espaço de trabalho do workspace em três grandes categorias:
+---
 
-Users/ (Espaço Pessoal / Sandbox): Diretórios individuais para desenvolvimento inicial, testes locais e exploração de dados sem risco de impactar outros usuários.
+## Parte 1 — Organização de Notebooks
 
-Shared/ (Projetos Compartilhados): Utilizado para bibliotecas comuns, rotinas reutilizáveis e código colaborativo entre equipes.
+> **Resumo:** um notebook Databricks é um documento interativo onde se escreve, executa e compartilha código de análise de dados. Organizar bem esses notebooks deixa de ser preferência pessoal e vira requisito para engenharia de dados, qualidade e esteiras de CI/CD em ambiente corporativo.
 
-Production/ ou Projects/ (Ambiente Oficial): Espaço estruturado conectado ao controle de versão (Git) onde residem as pipelines oficiais executadas em produção via Workflows/Jobs.
+### Onde cada tipo de código vive
 
-2. Estrutura por Arquitetura de Dados (Medallion Architecture)
-Em projetos de Engenharia de Dados, a organização dos notebooks costuma acompanhar as camadas da arquitetura Medalhão:
+O Workspace do Databricks se divide em três grandes áreas, cada uma com um propósito diferente:
 
-```text
-📁 ETL_Pipeline/
-├── 📄 00_setup_config.py      # Variáveis globais, conexões e funções auxiliares
-├── 📄 01_ingestion_bronze.py  # Leitura das fontes e carga no catálogo em estado bruto
-├── 📄 02_transform_silver.py  # Limpeza, deduplicação, validações e qualidade de dados
-└── 📄 03_aggregate_gold.py    # Regras de negócio, agregados e tabelas prontas para consumo
-````
+```mermaid
+graph TD
+    W[Workspace Databricks]
+    W --> U["👤 Users/<br/>Espaço pessoal · Sandbox<br/>testes e exploração sem risco"]
+    W --> S["🤝 Shared/<br/>Projetos compartilhados<br/>bibliotecas e rotinas reutilizáveis"]
+    W --> P["🚀 Production/ ou Projects/<br/>Ambiente oficial<br/>conectado ao Git · roda via Jobs"]
+```
 
+### Estrutura por Arquitetura Medalhão
 
-Modularização via %run ou Módulos Python (.py):
+Em projetos de Engenharia de Dados, os notebooks costumam seguir as camadas da arquitetura Medalhão — cada script com uma responsabilidade só:
 
-%run ./notebook_auxiliar: Executa um notebook dentro de outro, importando suas variáveis e funções (muito usado para scripts de configuração).
+```mermaid
+graph LR
+    A["00_setup_config.py<br/>variáveis, conexões, funções auxiliares"] --> B["01_ingestion_bronze.py<br/>leitura das fontes · carga bruta"]
+    B --> C["02_transform_silver.py<br/>limpeza, deduplicação, qualidade"]
+    C --> D["03_aggregate_gold.py<br/>regras de negócio · pronto para consumo"]
+```
 
-Arquivos .py nativos: O Databricks permite importar arquivos .py comuns armazenados na mesma estrutura de pastas como módulos Python convencionais (import my_module).
+**Formas de modularizar o código:**
 
-Parametrização com Widgets: Uso de dbutils.widgets para capturar parâmetros de entrada dinamicamente (ex: data de execução, ambiente dev/prod), evitando que valores fixos (hardcoded) fiquem espalhados no código.
+| Recurso | Para que serve |
+|---|---|
+| `%run ./notebook_auxiliar` | Executa um notebook dentro de outro, importando variáveis e funções |
+| Arquivos `.py` nativos | Importados como módulos Python comuns (`import my_module`) |
+| `dbutils.widgets` | Captura parâmetros de entrada dinamicamente (data, ambiente dev/prod) — evita valores fixos no código |
+| `%md` | Documenta objetivo, entradas, saídas e regras de negócio direto nas células |
 
-Documentação Embutida (Markdown): Uso do comando %md para documentar o objetivo do script, entradas, saídas e regras de negócio aplicadas nas células.
+**Governança e versionamento:** o **Databricks Repos** sincroniza pastas de notebooks com repositórios remotos (GitHub, Azure DevOps, GitLab, Bitbucket), viabilizando versionamento por branch, code review e CI/CD.
 
-3. Principais Recursos de Organização no Databricks
-Databricks Repos / Git Integration: Permite sincronizar pastas de notebooks diretamente com repositórios remotos (GitHub, Azure DevOps, GitLab, Bitbucket). Isso viabiliza versionamento por branches, code reviews e controle de implantação via CI/CD.
+### Boas práticas x Práticas inadequadas
 
-| Aspecto | Prática Inadequada | Boa Prática de Organização |
-| :--- | :--- | :--- |
-| **Escopo do Script** | Notebooks monolíticos com milhares de linhas executando Ingestão e Carga juntas. | Notebooks pequenos e focados em uma única responsabilidade no fluxo. |
-| **Versionamento** | Código alterado manualmente no workspace sem registro de histórico. | Notebooks vinculados a Reposiórios Git (GitHub, Azure DevOps) com controle por branch. |
-| **Parametrização** | Mudar variáveis manualmente no código a cada execução. | Uso de **Widgets** e integração com parâmetros de **Databricks Jobs**. |
-| **Reutilização** | Código duplicado e copiado em múltiplos notebooks. | Funções utilitárias consolidadas em módulos Python ou notebooks utilitários. |
+| Aspecto | ❌ Prática inadequada | ✅ Boa prática |
+|---|---|---|
+| **Escopo do script** | Notebook monolítico com milhares de linhas fazendo ingestão e carga juntas | Notebooks pequenos, uma responsabilidade cada |
+| **Versionamento** | Código alterado direto no workspace, sem histórico | Notebooks vinculados a repositório Git, com controle por branch |
+| **Parametrização** | Variáveis trocadas manualmente a cada execução | Uso de Widgets + parâmetros de Databricks Jobs |
+| **Reutilização** | Código duplicado em vários notebooks | Funções utilitárias em módulos/notebooks utilitários |
 
-Acessar DataBricks / Workspace
+### Passo a passo: criando a estrutura de pastas
 
-<img width="1359" height="503" alt="image" src="https://github.com/user-attachments/assets/80ad51fa-f259-45d3-b9a5-7325094f921d" />
+**1. Acessar o Databricks / Workspace**
 
-Dentro do Worspace / Users / Selecionar usuario
+<img width="1359" height="503" alt="Acessar Databricks Workspace" src="https://github.com/user-attachments/assets/80ad51fa-f259-45d3-b9a5-7325094f921d" />
 
-<img width="1363" height="446" alt="image" src="https://github.com/user-attachments/assets/b814d33f-65ae-4844-9e3c-605496aaf2bc" />
+**2. Dentro do Workspace, ir em Users e selecionar o usuário**
 
-Criar uma nova pasta
+<img width="1363" height="446" alt="Selecionar usuário" src="https://github.com/user-attachments/assets/b814d33f-65ae-4844-9e3c-605496aaf2bc" />
 
-<img width="828" height="418" alt="image" src="https://github.com/user-attachments/assets/adc3ebe3-5fb1-44b4-90aa-62c4397948db" />
+**3. Criar uma nova pasta**
 
-<img width="946" height="438" alt="image" src="https://github.com/user-attachments/assets/f966486d-0d74-4ab0-a0ec-23142066c01e" />
+<img width="828" height="418" alt="Criar nova pasta" src="https://github.com/user-attachments/assets/adc3ebe3-5fb1-44b4-90aa-62c4397948db" />
+<img width="946" height="438" alt="Nova pasta criada" src="https://github.com/user-attachments/assets/f966486d-0d74-4ab0-a0ec-23142066c01e" />
 
-Criar uma Subpasta chamada Links importantes
+**4. Criar a subpasta "Links importantes"**
 
-<img width="720" height="414" alt="image" src="https://github.com/user-attachments/assets/06b27a5d-1644-419f-af76-6852b3630dcf" />
+<img width="720" height="414" alt="Subpasta Links importantes" src="https://github.com/user-attachments/assets/06b27a5d-1644-419f-af76-6852b3630dcf" />
 
-Criar uma nova subpasta chamada Comandos Basicos
+**5. Criar a subpasta "Comandos Básicos"**
 
-<img width="658" height="240" alt="image" src="https://github.com/user-attachments/assets/944c7898-7732-4367-9a3a-69d2a5c34258" />
+<img width="658" height="240" alt="Subpasta Comandos Básicos" src="https://github.com/user-attachments/assets/944c7898-7732-4367-9a3a-69d2a5c34258" />
 
-Dentro de Comandos basicos vamos criar o nosso primeiro notebook
+**6. Dentro de "Comandos Básicos", criar o primeiro notebook**
 
-<img width="871" height="503" alt="image" src="https://github.com/user-attachments/assets/96095b37-9408-4140-9ccc-b331f9822fed" />
+<img width="871" height="503" alt="Criar primeiro notebook" src="https://github.com/user-attachments/assets/96095b37-9408-4140-9ccc-b331f9822fed" />
 
-Renomear o notebook para testes
+**7. Renomear o notebook para "testes"**
 
-<img width="753" height="364" alt="image" src="https://github.com/user-attachments/assets/3bfffc5f-73a9-4c09-a0bf-a46eb213deda" />
+<img width="753" height="364" alt="Renomear notebook" src="https://github.com/user-attachments/assets/3bfffc5f-73a9-4c09-a0bf-a46eb213deda" />
 
-Vamos Remover esse Notebook de testes
+**8. Remover o notebook de testes**
 
-<img width="1108" height="581" alt="image" src="https://github.com/user-attachments/assets/6f481ac5-feb5-4c12-af0f-a3bf43fbadf4" />
+<img width="1108" height="581" alt="Remover notebook de testes" src="https://github.com/user-attachments/assets/6f481ac5-feb5-4c12-af0f-a3bf43fbadf4" />
 
-### 02. Hierarquias Databricks - Catalog, Schema, Tabelas e Volumens
+---
 
-O Unity Catalog é a solução de governança unificada e centralizada de dados e inteligência artificial da Databricks.
+## Parte 2 — Hierarquia do Unity Catalog
 
-Ele funciona como uma camada única de controle aplicada a todas as áreas de trabalho (workspaces) do Databricks na sua nuvem (AWS, Azure ou GCP).
+> **Resumo:** o Unity Catalog é a solução de governança unificada de dados e IA da Databricks — uma camada única de controle aplicada a todos os workspaces, em qualquer nuvem (AWS, Azure ou GCP).
 
-Dentro do Databricks Unity Catalog, esses elementos formam a estrutura hierárquica para governança, organização e controle de acesso aos dados:
+### A hierarquia em um diagrama
 
-Catalog (Catálogo): O nível mais alto de organização (container primário). Agrupa esquemas e serve como a principal fronteira para definir permissões de governança e isolamento de ambientes (ex: prod, dev).
+```mermaid
+graph TD
+    C["📦 Catalog<br/>nível mais alto · governança e isolamento<br/>(ex: prod, dev)"]
+    C --> S["📁 Schema<br/>agrupamento lógico por contexto/projeto"]
+    S --> T["📊 Tabelas<br/>dados estruturados (Delta Lake)<br/>consultas SQL, análises, ML"]
+    S --> V["🗂️ Volumes<br/>dados não estruturados<br/>imagens, PDFs, JSONs, CSVs, logs"]
+```
 
-Schema (Esquema / Database): O segundo nível da hierarquia, contido dentro de um Catalog. Funciona como uma pasta/diretório para organizar logicamente ativos relacionados (tabelas, visões e volumes).
+### O que é cada nível
 
-Tabelas (Tables): Objetos de dados estruturados e tabulares (com colunas e linhas) gerenciados pelo Unity Catalog (geralmente no formato Delta Lake), usados para consultas SQL, análises e machine learning.
-
-Volumes (Volumes): Objetos que representam armazenamento de dados não estruturados ou semi-estruturados (como imagens, arquivos PDF, JSONs brutos, CSVs ou logs). Permitem acessar e governar arquivos diretamente no armazenamento em nuvem sem precisar convertê-los em tabelas.
-
-| Nível | Função Principal | Tipo de Dado Contido |
-| :--- | :--- | :--- |
+| Nível | Função principal | Tipo de dado contido |
+|---|---|---|
 | **Catalog** | Governança e isolamento de alto nível | Schemas |
 | **Schema** | Agrupamento lógico por contexto/projeto | Tabelas, Views, Volumes |
-| **Tabelas** | Dados estruturados para consulta SQL/Analytics | Linhas e Colunas (Delta) |
+| **Tabelas** | Dados estruturados para consulta SQL/Analytics | Linhas e colunas (Delta) |
 | **Volumes** | Armazenamento governado de arquivos brutos | Arquivos não estruturados |
 
-<img width="546" height="411" alt="image" src="https://github.com/user-attachments/assets/9464e199-d287-4bb8-938f-139820b77202" />
+<img width="546" height="411" alt="Hierarquia Unity Catalog" src="https://github.com/user-attachments/assets/9464e199-d287-4bb8-938f-139820b77202" />
+<img width="1343" height="419" alt="Hierarquia Unity Catalog detalhada" src="https://github.com/user-attachments/assets/e3406691-85d2-4186-bb05-2e210ce09267" />
 
-<img width="1343" height="419" alt="image" src="https://github.com/user-attachments/assets/e3406691-85d2-4186-bb05-2e210ce09267" />
+### Passo a passo: criando a hierarquia na prática
 
-### Criando Hierarquia catalog na prática
+**1. Escolher a linguagem da célula e criar novas células de código**
 
-Aqui eu posso escolher a linguagem que eu quero escrever
+<img width="1259" height="521" alt="Escolher linguagem" src="https://github.com/user-attachments/assets/925eed28-03cd-434c-bf99-2d813997a3c1" />
+<img width="1108" height="470" alt="Criar novas células" src="https://github.com/user-attachments/assets/079b4e74-ea59-4cb1-a929-97464e45b5e9" />
 
-<img width="1259" height="521" alt="image" src="https://github.com/user-attachments/assets/925eed28-03cd-434c-bf99-2d813997a3c1" />
+**2. Criar um Catalog** (exemplo baseado na [documentação oficial da Microsoft](https://learn.microsoft.com/en-us/azure/databricks/catalogs/create-catalog))
 
-Para criar novas celulas de código
+<img width="715" height="149" alt="Comando criar catalog" src="https://github.com/user-attachments/assets/8c0e4ae0-768b-4e64-be07-e4e556ebf41b" />
+<img width="752" height="457" alt="Executando criação do catalog" src="https://github.com/user-attachments/assets/c5c3dc1d-2b43-4de9-9055-0f6be746d0de" />
 
-<img width="1108" height="470" alt="image" src="https://github.com/user-attachments/assets/079b4e74-ea59-4cb1-a929-97464e45b5e9" />
+Após executar o comando na célula, o Catalog é criado:
 
-- Criando um catalogo utilizando o exemplo da Microsoft
+<img width="545" height="380" alt="Catalog criado" src="https://github.com/user-attachments/assets/be4e609d-1763-4fc5-bf30-8ee4d9c0ddb3" />
 
-Create catalogs: https://learn.microsoft.com/en-us/azure/databricks/catalogs/create-catalog
+**3. Deletar um Catalog**
 
-<img width="715" height="149" alt="image" src="https://github.com/user-attachments/assets/8c0e4ae0-768b-4e64-be07-e4e556ebf41b" />
+<img width="714" height="139" alt="Comando deletar catalog" src="https://github.com/user-attachments/assets/0677952c-4abd-4466-9861-4f8a1a35a645" />
+<img width="707" height="175" alt="Confirmação de exclusão" src="https://github.com/user-attachments/assets/96be1e79-225b-43e7-89d4-2d9795990041" />
 
-<img width="752" height="457" alt="image" src="https://github.com/user-attachments/assets/c5c3dc1d-2b43-4de9-9055-0f6be746d0de" />
+**4. Criar a hierarquia completa (Catalog → Schema → Tabela/Volume)**
 
-Apos executar o camando da celula o Catalogo é criado
+<img width="706" height="324" alt="Hierarquia completa" src="https://github.com/user-attachments/assets/1820eca4-9b73-4278-b640-02aa101f6100" />
+<img width="711" height="122" alt="Comando hierarquia" src="https://github.com/user-attachments/assets/1d7dde29-a06e-40d7-8119-e8b07a6676fa" />
+<img width="1080" height="407" alt="Executando hierarquia" src="https://github.com/user-attachments/assets/c044df4a-fe87-4a4a-8204-23c75dd91c4e" />
 
-<img width="545" height="380" alt="image" src="https://github.com/user-attachments/assets/be4e609d-1763-4fc5-bf30-8ee4d9c0ddb3" />
+**5. Criar o Schema**
 
-- Deletar Catalago
+<img width="1325" height="486" alt="Criando schema" src="https://github.com/user-attachments/assets/67aeff62-f1eb-43fb-a9b4-963073129abc" />
 
-<img width="714" height="139" alt="image" src="https://github.com/user-attachments/assets/0677952c-4abd-4466-9861-4f8a1a35a645" />
+> Dentro do Schema, é possível criar **Volumes** e **Tabelas**.
 
+**6. Criar uma Tabela**
 
-<img width="707" height="175" alt="image" src="https://github.com/user-attachments/assets/96be1e79-225b-43e7-89d4-2d9795990041" />
+<img width="1055" height="245" alt="Criação de tabela" src="https://github.com/user-attachments/assets/d5dfd2a8-5c28-4d4b-9029-12c3e7beb4b7" />
 
-### Criar hierarquia completa
+**7. Criar um Volume**
 
-<img width="706" height="324" alt="image" src="https://github.com/user-attachments/assets/1820eca4-9b73-4278-b640-02aa101f6100" />
+<img width="1089" height="498" alt="Criação de volume" src="https://github.com/user-attachments/assets/554313ca-6d6b-485e-a718-2e7d81c1c146" />
 
-<img width="711" height="122" alt="image" src="https://github.com/user-attachments/assets/1d7dde29-a06e-40d7-8119-e8b07a6676fa" />
+**8. Resultado final** — Tabela e Volume dentro do mesmo Schema:
 
-<img width="1080" height="407" alt="image" src="https://github.com/user-attachments/assets/c044df4a-fe87-4a4a-8204-23c75dd91c4e" />
+<img width="1100" height="445" alt="Tabela e volume no schema" src="https://github.com/user-attachments/assets/71520680-b433-4718-983a-6f275a052999" />
 
-- Criando o schema
+---
 
-  <img width="1325" height="486" alt="image" src="https://github.com/user-attachments/assets/67aeff62-f1eb-43fb-a9b4-963073129abc" />
+## Resumo geral
 
-- Dentro do schema eu posso criar Volumes e Tabelas
+```mermaid
+graph TD
+    A[Workspace organizado] --> B[Notebooks nas pastas certas: Users, Shared, Production]
+    A --> C[Código modular: setup → bronze → silver → gold]
+    A --> D[Dados governados no Unity Catalog]
+    D --> E[Catalog → Schema → Tabelas / Volumes]
+```
 
-### Criacao de Tabela
+- Estruturar o Workspace em **Users / Shared / Production** evita bagunça e risco em ambiente colaborativo
+- Seguir a **Arquitetura Medalhão** (setup → bronze → silver → gold) mantém cada notebook com uma única responsabilidade
+- **Widgets**, `%run` e módulos `.py` evitam código duplicado e valores fixos espalhados
+- O **Unity Catalog** organiza dados em 4 níveis: Catalog → Schema → Tabelas / Volumes
+- Toda a hierarquia pode ser criada e removida via comandos simples direto no notebook
 
-<img width="1055" height="245" alt="image" src="https://github.com/user-attachments/assets/d5dfd2a8-5c28-4d4b-9029-12c3e7beb4b7" />
-
-
-### Criacao de Volume
-
-
-<img width="1089" height="498" alt="image" src="https://github.com/user-attachments/assets/554313ca-6d6b-485e-a718-2e7d81c1c146" />
-
-- Por essa visão consigo verificar que tenho uma tabela e um volume dentro do Schema.
-
-<img width="1100" height="445" alt="image" src="https://github.com/user-attachments/assets/71520680-b433-4718-983a-6f275a052999" />
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**Próximos passos:** aprofundar em manipulação de dados com PySpark (filtros, colunas, tipos, agregações) dentro dessa estrutura já organizada.
