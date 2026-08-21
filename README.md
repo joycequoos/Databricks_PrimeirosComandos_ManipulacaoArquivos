@@ -176,6 +176,8 @@ Após executar o comando na célula, o Catalog é criado:
 
 ---
 
+[Criando ambiente Oficial do Curso](https://github.com/joycequoos/Databricks-com-linguagem-SQL-Python-PySpark-Para-An-lise-de-Dados-Cloud/blob/main/README.md)
+
 ## Resumo geral
 
 ```mermaid
