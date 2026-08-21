@@ -159,9 +159,17 @@ Apos executar o camando da celula o Catalogo é criado
 <img width="1055" height="245" alt="image" src="https://github.com/user-attachments/assets/d5dfd2a8-5c28-4d4b-9029-12c3e7beb4b7" />
 
 
+### Criacao de Volume
 
 
+<img width="1089" height="498" alt="image" src="https://github.com/user-attachments/assets/554313ca-6d6b-485e-a718-2e7d81c1c146" />
 
+- Por essa visão consigo verificar que tenho uma tabela e um volume dentro do Schema.
+
+<img width="1100" height="445" alt="image" src="https://github.com/user-attachments/assets/71520680-b433-4718-983a-6f275a052999" />
+
+
+  
 
 
 
