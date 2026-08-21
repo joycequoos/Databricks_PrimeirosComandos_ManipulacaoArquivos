@@ -176,22 +176,7 @@ Após executar o comando na célula, o Catalog é criado:
 
 ---
 
-[Criando ambiente Oficial do Curso](https://github.com/joycequoos/Databricks-com-linguagem-SQL-Python-PySpark-Para-An-lise-de-Dados-Cloud/blob/main/README.md)
+[Criando ambiente Oficial do Curso](https://github.com/joycequoos/Databricks_Ambiente_Oficial_Curso)
 
-## Resumo geral
-
-```mermaid
-graph TD
-    A[Workspace organizado] --> B[Notebooks nas pastas certas: Users, Shared, Production]
-    A --> C[Código modular: setup → bronze → silver → gold]
-    A --> D[Dados governados no Unity Catalog]
-    D --> E[Catalog → Schema → Tabelas / Volumes]
-```
-
-- Estruturar o Workspace em **Users / Shared / Production** evita bagunça e risco em ambiente colaborativo
-- Seguir a **Arquitetura Medalhão** (setup → bronze → silver → gold) mantém cada notebook com uma única responsabilidade
-- **Widgets**, `%run` e módulos `.py` evitam código duplicado e valores fixos espalhados
-- O **Unity Catalog** organiza dados em 4 níveis: Catalog → Schema → Tabelas / Volumes
-- Toda a hierarquia pode ser criada e removida via comandos simples direto no notebook
 
 **Próximos passos:** aprofundar em manipulação de dados com PySpark (filtros, colunas, tipos, agregações) dentro dessa estrutura já organizada.
