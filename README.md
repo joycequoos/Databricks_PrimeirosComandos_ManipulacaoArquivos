@@ -152,6 +152,14 @@ Apos executar o camando da celula o Catalogo é criado
 
   <img width="1325" height="486" alt="image" src="https://github.com/user-attachments/assets/67aeff62-f1eb-43fb-a9b4-963073129abc" />
 
+- Dentro do schema eu posso criar Volumes e Tabelas
+
+### Criacao de Tabela
+
+<img width="1055" height="245" alt="image" src="https://github.com/user-attachments/assets/d5dfd2a8-5c28-4d4b-9029-12c3e7beb4b7" />
+
+
+
 
 
 
