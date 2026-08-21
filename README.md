@@ -183,4 +183,4 @@ Após executar o comando na célula, o Catalog é criado:
 [Criando ambiente Oficial do Curso](https://github.com/joycequoos/Databricks_Ambiente_Oficial_Curso)
 
 
-**Próximos passos:** aprofundar em manipulação de dados com PySpark (filtros, colunas, tipos, agregações) dentro dessa estrutura já organizada.
+**Próximos passos:** Importanto Arquivos para Volume, Manipulacao de Dados dbutils, Manipulacao de Dataframe Databricks, Dados Publicos para Treino databricks-datasets + Kaggle
